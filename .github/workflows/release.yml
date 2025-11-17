@@ -95,26 +95,3 @@ jobs:
           zip -r ${{ env.ZIP_NAME }}.zip *
           echo "Created zip file: ${{ env.ZIP_NAME }}.zip"
           mv *.zip ../
-
-      - name: Create release
-        if: ${{ env.version_changed == 'true' }}
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: "${{ env.ZIP_NAME }}.zip"
-          tag_name: "${{ env.VERSION }}"
-          name: "Release ${{ env.VERSION }}"
-          body: "${{ env.CHANGELOG }}"
-          draft: false
-          prerelease: false
-
-      - name: Force update release file
-        if: ${{ inputs.force_release }}
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: "${{ env.ZIP_NAME }}.zip"
-          tag_name: "${{ env.VERSION }}"
-          name: "Release ${{ env.VERSION }}"
